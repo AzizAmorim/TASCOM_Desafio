@@ -1,6 +1,6 @@
 import Task from "../models/task.js"
-import Tag from "../models/tag.js"
 import mongoose from "mongoose";
+import Tag from "../models/tag.js"
 
 const createTask = async (req, res) => {
     try {
