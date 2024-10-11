@@ -4,6 +4,14 @@ import Task from "../models/task.js"
 
 const createTag = async (req, res) => {
     try {
+        const dbTag = await Tag.find({name: req.body.name});
+        if(Object.keys(dbTag).length !== 0){
+            for (let i = 0; i < dbTag.length; i++) {
+                if(dbTag[i].color === req.body.color){
+                    return res.status(200).send({ msg: "tag já existe!" });
+                };
+            };
+        };
         const tag = new Tag({
             name: req.body.name,
             color: req.body.color
@@ -28,6 +36,14 @@ const getAllTags = async (req, res) => {
 
 const editTag = async (req, res) => {
     try {
+        const dbTag = await Tag.find({name: req.body.name});
+        if(Object.keys(dbTag).length !== 0){
+            for (let i = 0; i < dbTag.length; i++) {
+                if(dbTag[i].color === req.body.color){
+                    return res.status(200).send({ msg: "tag já existe!" });
+                };
+            };
+        };
         const tag = await Tag.findByIdAndUpdate(req.params.tagId, {
             name: req.body.name,
             color: req.body.color
