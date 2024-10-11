@@ -4,10 +4,12 @@ import mongoose from "mongoose";
 
 const createTask = async (req, res) => {
     try {
-        const title = req.body.title;
-        const dbTask = await Task.find({title: title});
+        const dbTask = await Task.find({title: req.body.title});
         if(Object.keys(dbTask).length !== 0){
             return res.status(200).send({ msg: "titulo já existe!" });
+        };
+        if(req.body.priority < 1 || req.body.priority > 10){
+            return res.status(200).send({ msg: "prioridade só pode ser de 1 a 10!" });
         };
         const task = new Task({
             title: req.body.title,
@@ -35,6 +37,13 @@ const getAllTasks = async (req, res) => {
 
 const editTask = async (req, res) => {
     try {
+        const dbTask = await Task.find({title: req.body.title});
+        if(Object.keys(dbTask).length !== 0){
+            return res.status(200).send({ msg: "titulo já existe!" });
+        };
+        if(req.body.priority < 1 || req.body.priority > 10){
+            return res.status(200).send({ msg: "prioridade só pode ser de 1 a 10!" });
+        };
         const task = await Task.findByIdAndUpdate(req.params.taskId, {
             title: req.body.title,
             status: req.body.status,
