@@ -7,8 +7,10 @@ Uma API para um aplicativo de lista de tarefas (to do list) com modelos de Tasks
 Utilize o .env fornecido como expemplo e preencha com um PORT de sua escolha e uma URI de um banco de dados Mongo.
 
 .env.exemple
+```
 PORT=
 DB_URI=
+```
 
 Após isso, basta usar o seguinte comando no terminal:
 
