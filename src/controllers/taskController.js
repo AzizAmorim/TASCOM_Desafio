@@ -5,8 +5,8 @@ import mongoose from "mongoose";
 const createTask = async (req, res) => {
     try {
         const title = req.body.title;
-        const OldTask = await Task.find({title: title});
-        if(OldTask != null){
+        const dbTask = await Task.find({title: title});
+        if(Object.keys(dbTask).length !== 0){
             return res.status(200).send({ msg: "titulo já existe!" });
         };
         const task = new Task({
@@ -19,7 +19,7 @@ const createTask = async (req, res) => {
         return res.status(201).send(task);
     } catch (error) {
         console.log(error);
-        res.status(500).send({ msg: "Algo deu Errado!" });
+        return res.status(500).send({ msg: "Algo deu Errado!" });
     }
 };
 
@@ -29,7 +29,7 @@ const getAllTasks = async (req, res) => {
         return res.status(200).send(task);
     } catch (error) {
         console.log(error);
-        res.status(500).send({ msg: "Algo deu Errado!" });
+        return res.status(500).send({ msg: "Algo deu Errado!" });
     }
 };
 
@@ -44,7 +44,7 @@ const editTask = async (req, res) => {
         return res.status(200).send(task);
     } catch (error) {
         console.log(error);
-        res.status(500).send({ msg: "Algo deu Errado!" });
+        return res.status(500).send({ msg: "Algo deu Errado!" });
     }
 };
 
@@ -54,7 +54,7 @@ const deleteTask = async (req, res) => {
         return res.status(204).send(task);
     } catch (error) {
         console.log(error);
-        res.status(500).send({ msg: "Algo deu Errado!" });
+        return res.status(500).send({ msg: "Algo deu Errado!" });
     }
 };
 
@@ -68,17 +68,21 @@ const addTagToTask = async (req, res) => {
         return res.status(200).send(task);
     } catch (error) {
         console.log(error);
-        res.status(500).send({ msg: "Algo deu Errado!" });
+        return res.status(500).send({ msg: "Algo deu Errado!" });
     }
 };
 
 const getTasksByTags = async (req, res) => {
     try {
-        const task = await Task.find({"tags._id": new mongoose.Types.ObjectId(req.body.tags)});
+        const tagsIds = [];
+        for (let i = 0; i < req.body.tags.length; i++) {
+            tagsIds[i] = new mongoose.Types.ObjectId(req.body.tags[i]);
+        };
+        const task = await Task.find({"tags._id": {$in: tagsIds} });
         return res.status(200).send(task);
     } catch (error) {
         console.log(error);
-        res.status(500).send({ msg: "Algo deu Errado!" });
+        return res.status(500).send({ msg: "Algo deu Errado!" });
     }
 }; 
 
